@@ -5,6 +5,8 @@ const volleyball = require('volleyball');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
+const User = require('./db/models/user');
+
 /* "Enhancing" middleware (does not send response, server-side effects only) */
 app.use(volleyball);
 app.use(bodyParser.json());
@@ -19,8 +21,24 @@ app.use(function (req, res, next) {
   console.log('session', req.session);
   next();
 });
+
+app.post('/login', function(req, res, next){
+  User.findOne({
+    where: req.body
+  })
+  .then(function (user) {
+    if (!user) {
+      res.sendStatus(401);
+    } else {
+      req.session.userId = user.id;
+      res.json(user);
+    }
+  })
+  .catch(next);
+})
+
 /* "Responding" middleware (may send a response back to client) */
-//app.use('/api', require('./api'));
+app.use('/api', require('./api'));
 
 const validFrontendRoutes = ['/', '/stories', '/users', '/stories/:id', '/users/:id', '/signup', '/login'];
 const indexPath = path.join(__dirname, '../public/index.html');
