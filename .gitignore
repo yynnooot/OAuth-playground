@@ -24,3 +24,5 @@ Thumbs.db
 # repos / submodules
 .git
 .svn
+
+.env

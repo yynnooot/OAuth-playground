@@ -4,9 +4,13 @@ const path = require('path');
 const volleyball = require('volleyball');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const passport = require('passport');
 
 const User = require('./db/models/user');
 
+require('dotenv').config();
+
+console.log('***************THIS IS HELLO', process.env.hello)
 /* "Enhancing" middleware (does not send response, server-side effects only) */
 app.use(volleyball);
 app.use(bodyParser.json());
@@ -21,6 +25,9 @@ app.use(function (req, res, next) {
   console.log('session', req.session);
   next();
 });
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/login', function(req, res, next){
   User.findOne({
