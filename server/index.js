@@ -8,9 +8,7 @@ const passport = require('passport');
 
 const User = require('./db/models/user');
 
-require('dotenv').config();
 
-console.log('***************THIS IS HELLO', process.env.hello)
 /* "Enhancing" middleware (does not send response, server-side effects only) */
 app.use(volleyball);
 app.use(bodyParser.json());
