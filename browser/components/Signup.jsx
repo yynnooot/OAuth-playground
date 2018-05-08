@@ -46,7 +46,7 @@ class Signup extends React.Component {
           <p>
             <a
               target="_self"
-              href="/auth/linkedin"
+              href="/api/auth/linkedin"
               className="btn btn-social btn-linkedin">
               <i className="fa fa-linkedin" />
               <span>{message} with Linkedin</span>

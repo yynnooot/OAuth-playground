@@ -11,7 +11,6 @@ require('dotenv').config();
 // https://www.linkedin.com/secure/developer
 var LINKEDIN_CLIENT_ID = process.env.clientId;
 var LINKEDIN_CLIENT_SECRET = process.env.clientSecret;
-console.log('PROCESS', process.env )
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -35,7 +34,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new LinkedinStrategy({
   clientID:     LINKEDIN_CLIENT_ID,
   clientSecret: LINKEDIN_CLIENT_SECRET,
-  callbackURL:  "/auth/linkedin/callback",
+  callbackURL:  'http://127.0.0.1:1337/api/auth/linkedin/callback',
   scope:        [ 'r_basicprofile', 'r_emailaddress'],
   passReqToCallback: true
 },
@@ -47,11 +46,17 @@ function(req, accessToken, refreshToken, profile, done) {
     // represent the logged-in user.  In a typical application, you would want
     // to associate the Linkedin account with a user record in your database,
     // and return that user instead.
+      console.log('____________THIS IS PROFILE:', profile)
       return done(null, profile);
     });
   }
 ));
 
+// .../api/auth
+router.get('/', (req,res,next) => {
+  console.log('HIT________________________________')
+  res.json('HELLO')
+})
 router.get('/linkedin',
   passport.authenticate('linkedin', { state: 'SOME STATE' }),
   function(req, res){
